@@ -25,14 +25,16 @@
 <!-- animate css -->
 <link rel="stylesheet" href="assets/css/animate.min.css">
 <!-- main css -->
-<link rel="stylesheet" href="assets/css/style.css">
+
+<!-- <link rel="stylesheet" href="assets/css/style.css"> -->
 <!-- responsive css -->
 <link rel="stylesheet" href="assets/css/responsive.css">
+
 <!-- jquery js -->
 <script src="assets/js/jquery-3.3.1.min.js"></script>
 </head>
 
-
+<link rel="stylesheet" href="assets/css/chaebin_style.css">
 
 <body>
 
