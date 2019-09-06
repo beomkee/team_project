@@ -59,7 +59,7 @@ public class AdminController {
 		return mv;
 	}
 
-	@RequestMapping("emp")
+	@RequestMapping("emp") //얘랑 아주 똑같아! 아주아중자우자ㅜ아자우자우우자우ㅏ또각ㅌ아
 	public ModelAndView emp(HttpSession session) {
 		mv.clear();
 

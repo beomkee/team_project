@@ -169,8 +169,10 @@
 					<img class="profile-img img-lg rounded-circle" src="<%=request.getContextPath()%>/assets_admin/images/profile/male/image_1.png" alt="profile image">
 				</div>
 				<div class="info-wrapper">
-					<p class="user-name">Allen Clerk</p>
-					<h6 class="display-income">$3,400,00</h6>
+					<span class="user-name"><br>소중한 식스택배 <c:if test="${empty EMP }">사원님</c:if><c:if test="${!empty EMP }">
+					${EMP.E_ID}
+					</c:if>!</span></p>
+					<h6 class="display-income"><c:if test="${!empty EMP }"> ${EMP.RANKAVERAGE} </c:if></h6>
 				</div>
 			</div>
 			<ul class="navigation-menu">
@@ -273,7 +275,7 @@
 							<div class="grid-body">
 								<div class="item-wrapper">
 									<br>
-									<p><c:if test="${!empty member }">${member.e_id}</c:if>
+									<p><c:if test="${!empty EMP }"> ${EMP.E_ID} </c:if>
 									사원님의 평가도를 한 눈에 파악할 수 있도록 표준모형에 의한 평점통계 정보를 제공해 드립니다.</p>
 									<br>
 								</div>
@@ -296,7 +298,7 @@
 																	<label for="inputType1">사원번호</label>
 																</div>
 																<div class="col-md-9 showcase_content_area">
-																	<input type="number" class="form-control" id="inputType4" value="83393922">
+																	<c:if test="${!empty EMP }"> ${EMP.E_NUM}</c:if>
 																</div>
 															</div>
 															<div class="form-group row showcase_row_area">
@@ -304,7 +306,7 @@
 																	<label for="inputType1">근무지</label>
 																</div>
 																<div class="col-md-9 showcase_content_area">
-																	<input type="text" class="form-control" id="inputType1" value="Sara Watson">
+																	<c:if test="${!empty EMP }"> ${EMP.E_ADD}</c:if>
 																</div>
 															</div>
 
@@ -322,7 +324,7 @@
 																	<label for="inputType1">아이디</label>
 																</div>
 																<div class="col-md-9 showcase_content_area">
-																	<input type="text" class="form-control" id="inputType1" value="Sara Watson">
+																	<c:if test="${!empty EMP }"> ${EMP.E_ID}</c:if>
 																</div>
 															</div>
 															<div class="form-group row showcase_row_area">
@@ -330,25 +332,17 @@
 																	<label for="inputType13">비밀번호</label>
 																</div>
 																<div class="col-md-9 showcase_content_area">
-																	<input type="password" class="form-control" id="inputType3" value="00000000">
+																	<c:if test="${!empty EMP }"> ${EMP.E_PASSWD}</c:if>
 																</div>
 															</div>
 
-															<div class="form-group row showcase_row_area">
-																<div class="col-md-3 showcase_text_area">
-																	<label for="inputType1">주소</label>
-																</div>
-																<div class="col-md-9 showcase_content_area">
-																	<input type="text" class="form-control" id="inputType1" value="Sara Watson">
-																</div>
-															</div>
 
 															<div class="form-group row showcase_row_area">
 																<div class="col-md-3 showcase_text_area">
 																	<label for="inputType1">직급</label>
 																</div>
 																<div class="col-md-9 showcase_content_area">
-																	<input type="text" class="form-control" id="inputType1" value="Sara Watson">
+																	<c:if test="${!empty EMP }"> ${EMP.POSITION}</c:if>
 																</div>
 															</div>
 
@@ -357,7 +351,7 @@
 																	<label for="inputType1">전화번호</label>
 																</div>
 																<div class="col-md-9 showcase_content_area">
-																	<input type="text" class="form-control" id="inputType1" value="Sara Watson">
+																	<c:if test="${!empty EMP }"> ${EMP.E_TEL}</c:if>
 																</div>
 															</div>
 
@@ -366,7 +360,7 @@
 																	<label for="inputType1">생년월일</label>
 																</div>
 																<div class="col-md-9 showcase_content_area">
-																	<input type="text" class="form-control" id="inputType1" value="Sara Watson">
+																	<c:if test="${!empty EMP }"> ${EMP.E_BIRTH}</c:if>
 																</div>
 															</div>
 
@@ -375,14 +369,17 @@
 																	<label for="inputType1">평가평균</label>
 																</div>
 																<div class="col-md-9 showcase_content_area">
-																	<input type="text" class="form-control" id="inputType1" value="Sara Watson">
+																	<c:if test="${!empty EMP }"> ${EMP.RANKAVERAGE}</c:if>
 																</div>
 															</div>
+															<a class="wow fadeInUp boxed-btn" data-wow-duration="1.5s" href="accept/accept">
+																<span>수정완료</span>
+															</a>
 														</div>
 														<div class="col-lg-4 col-md-6 equel-grid">
 															<div class="grid">
 																<div class="grid-body">
-																	<p class="card-title">Campaign</p>
+																	<p class="card-title">등급</p>
 																	<div id="radial-chart"></div>
 																	<h4 class="text-center">$23,350.00</h4>
 																	<p class="text-center text-muted">Used balance this billing cycle</p>
