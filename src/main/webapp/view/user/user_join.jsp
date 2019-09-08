@@ -132,7 +132,7 @@
 
 				<br> <br> <br>
 				<center>
-					<form action="memJoin" method="post" name="twin">
+					<form action="memJoin2" method="post" name="twin">
 					
 						<!-- <form action="register.php" method="post" name="twin"> -->
 
@@ -216,31 +216,29 @@
 									<td colspan="3"><hr /></td>
 								</tr>
 
-								<tr>
-									<td width="5%" align="center">*</td>
-									<td width="15%">주 소</td>
-									<td><input type="text" size="10" name="wPostCode"
-										id="postcode" placeholder="우편번호" readonly="readonly"
-										onclick="DaumPostcode()"> <input type="button"
-										onclick="DaumPostcode()" value="우편번호 찾기"><br> <br />
+						<tr>
+							<td width="5%" align="center">*</td>
+							<td width="15%">주 소</td>
+							<td><input type="text" size="10" name="wPostCode"
+								id="postcode" placeholder="우편번호" 
+								onclick="DaumPostcode()"> <input type="button"
+								onclick="DaumPostcode()" value="우편번호 찾기"><br> <br />
 
-										<!-- 					<div class="col-md-12">
+								<!-- 					<div class="col-md-12">
 							<div class="form-element">
 								<button type="submit">
 									<span>우편번호 찾기</span>
 								</button>
 							</div>
 						</div> --> <input type="text" size="30" name="wRoadAddress"
-										id="roadAddress" placeholder="도로명주소" readonly="readonly"
-										onclick="DaumPostcode()"> <input type="text" size="30"
-										name="wJibunAddress" id="jibunAddress" placeholder="지번주소"
-										readonly="readonly" onclick="DaumPostcode()"> <br />
-										<span id="guide" style="color: #999; font-size: 10px;"></span>
-										<br /> <br /> <input type="text" name="wRestAddress"
-										placeholder="나머지 주소" size="70" /></td>
-								</tr>
+								id="roadAddress" placeholder="도로명주소" 
+								onclick="DaumPostcode()">  <br /> <span
+								id="guide" style="color: #999; font-size: 10px;"></span> <br />
+								<br /> <input type="text" name="wRestAddress"
+								placeholder="나머지 주소" size="70" /></td>
+						</tr>
 
-							</table>
+					</table>
 							<br />
 							<table>
 								<tr height="40">

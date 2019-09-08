@@ -74,5 +74,13 @@ public class TopMenuDataBean {
 	public void setTm_parent(int tm_parent) {
 		this.tm_parent = tm_parent;
 	}
+
+	@Override
+	public String toString() {
+		return "TopMenuDataBean [tm_num=" + tm_num + ", e_num=" + e_num + ", tm_text=" + tm_text + ", tm_depth="
+				+ tm_depth + ", tm_div=" + tm_div + ", tm_url=" + tm_url + ", tm_use=" + tm_use + ", tm_parent="
+				+ tm_parent + "]";
+	}
+	
 	
 }

@@ -4,48 +4,64 @@
 <mapper namespace="mybatis.TopMenu">
 
 	<select id="getTopMenus" resultType="TopMenu">
-		select * from top_menu where tm_use = 'y' order by tm_num, tm_div asc
+		select * from top_menu where
+		tm_use = 'y' order by tm_num, tm_div asc
 	</select>
 
-	<!-- <select id="insertArticle_new" resultType="int">
-		select nvl(max(num),0) from board
+	<select id="topMenuList" resultType="TopMenu">
+		select * from top_menu ORDER
+		BY tm_div
 	</select>
 
-	<update id="insertArticle_update" parameterType="hashmap">
-		update board set re_step=re_step+1 where ref= #{ref} and re_step > #{re_step}
-	</update>
+	<select id="getTopMenuNum" resultType="int">
+		select max(tm_num) from top_menu
+	</select>
 
-	<insert id="insertArticle_insert" parameterType="Board">
-		insert into
-		board values
-		(#{num},#{boardid}
-		,#{writer},#{email},#{subject},#{passwd},sysdate,0,
-		#{ref},#{re_step},#{re_level},#{content},#{ip}, #{filename},
-		#{filesize})
+	<insert id="insertTopMenu" parameterType="TopMenu">
+		insert into top_menu values
+		(#{tm_num},#{e_num},#{tm_text},#{tm_depth},#{tm_div},#{tm_url},#{tm_use},#{tm_parent})
 	</insert>
+	
+	<insert id="insertTopMenuNotparent" parameterType="TopMenu">
+		insert into top_menu values
+		(#{tm_num},#{e_num},#{tm_text},#{tm_depth},#{tm_div},#{tm_url},#{tm_use},null)
+	</insert>
+	
+	
 
-	<select id="update_passwd" parameterType="hashmap"
-		resultType="string">
-		select passwd from board where num =#{num}
+	<update id="updateTopMenu" parameterType="TopMenu">
+		update top_menu 
+		set 
+		e_num=#{e_num}, 
+		tm_text=#{tm_text},
+		tm_depth=2,
+		tm_div=#{tm_div},
+		tm_url=#{tm_url},
+		tm_use=#{tm_use}, 
+		tm_parent=#{tm_parent}
+		where tm_num=#{tm_num}
+	</update>
+	
+	<update id="updateTopMenuNotparent" parameterType="TopMenu">
+		update top_menu 
+		set 
+		e_num=#{e_num}, 
+		tm_text=#{tm_text},
+		tm_depth=1,
+		tm_div=#{tm_div},
+		tm_url=#{tm_url},
+		tm_use=#{tm_use}, 
+		tm_parent=null
+		where tm_num=#{tm_num}
+	</update>
+
+	<delete id="deleteTopMenu" parameterType="int">
+		delete from top_menu
+		where tm_num=#{tm_num}
+	</delete>
+	
+	
+	<select id="bringMenuInfo" parameterType="int" resultType="TopMenu">
+		select * from top_menu where tm_num=#{tm_num}
 	</select>
-
-	<update id="update_readcount" parameterType="hashmap">
-		update board set
-		readcount=readcount+1 where num = #{num}
-	</update>
-
-	<update id="update_update" parameterType="hashmap">
-		update board set
-		writer=#{writer},
-		email=#{email},
-		subject=#{subject},
-		passwd=#{passwd},
-		content=#{content}
-		where num=#{num}
-	</update>
-
-	<select id="delete" parameterType="hashmap">
-		delete from board where num = #{num}
-	</select> -->
-
 </mapper>

@@ -7,8 +7,7 @@
 }
 
 .satisfactionBoard-bg {
-	background-image:
-		url('../../img/satisfaction/satisfaction_board.jpg');
+	background-image: url('../../img/satisfaction/satisfaction_board.jpg');
 	background-size: cover;
 }
 
@@ -35,56 +34,75 @@
 	cursor: pointer;
 }
 
-
 .form-element input[type="password"] {
-    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    border: none;
-    outline: 0;
-    padding-left: 20px;
-    color: #4e5861;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	border: none;
+	outline: 0;
+	padding-left: 20px;
+	color: #4e5861;
 }
 
 .table {
-      border-collapse: collapse;
-      
-    }  
-    .table th {
-      text-align: center;
-      border-bottom: 3px solid #1792bf;
-    }
-    .table th, .table td {
-      padding: 10px;
-      text-align: center;
-      border-top: 0;
-    }
-    .table th:first-child, .table td:first-child {
-      border-left: 0;
-    }
-    .table th:last-child, .table td:last-child {
-      border-right: 0;
-    }
-    .table tr td:first-child{
-      text-align: center;
-    }
-    .table caption{caption-side: bottom; display: none;}
-
-a.boxed-btn,
-button.boxed-btn {
-    display: inline-block;
-    position: relative;
-    text-transform: uppercase;
-    font-size: 14px;
-    color: #fff;
-    font-weight: 600;
-    padding: 15px 20px;
-    text-align: center;
-    border-radius: 3px;
-    background-color: #58bed3;
-    border: none;
-    text-decoration: none;
-    -webkit-transition: .5s;
-    -o-transition: .5s;
-    transition: .5s;
+	border-collapse: collapse;
 }
+
+.table th {
+	text-align: center;
+	border-bottom: 3px solid #1792bf;
+}
+
+.table tr:first-child {
+	background-color: #ffffff;
+}
+
+/* .table tr:hover {
+	background-color: #e7e9eb;
+} */
+
+.table th, .table td {
+	padding: 10px;
+	text-align: center;
+	border-top: 0;
+}
+
+.table th:first-child, .table td:first-child {
+	border-left: 0;
+}
+
+.table th:last-child, .table td:last-child {
+	border-right: 0;
+}
+
+.table tr td:first-child {
+	text-align: center;
+}
+
+.table caption {
+	caption-side: bottom;
+	display: none;
+}
+
+a.boxed-btn, button.boxed-btn {
+	display: inline-block;
+	position: relative;
+	text-transform: uppercase;
+	font-size: 14px;
+	color: #fff;
+	font-weight: 600;
+	padding: 15px 20px;
+	text-align: center;
+	border-radius: 3px;
+	background-color: #58bed3;
+	border: none;
+	text-decoration: none;
+	-webkit-transition: .5s;
+	-o-transition: .5s;
+	transition: .5s;
+}
+
+/* .starImg {
+	width: 30px;
+	height: auto;
+} */

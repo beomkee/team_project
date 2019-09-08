@@ -6,40 +6,69 @@
 	<select id="surveyQuestionList" resultType="SurveyBoardQuestion">
 		select *
 		from
-		survey_question
+		survey_question order by sq_num
 	</select>
 
 
-	<select id="surveyAnswerList" parameterType="hashmap" resultType="SurveyBoardAnswer">
+	<select id="surveyAnswerList" parameterType="hashmap"
+		resultType="SurveyBoardAnswer">
 		select sa.sa_num, sa.sq_num, sa.sa_item
-		from SURVEY_QUESTION sq, SURVEY_ANSWER sa
+		from SURVEY_QUESTION sq,
+		SURVEY_ANSWER sa
 		WHERE sq.sq_num=sa.sq_num
 		<choose>
 			<when test="sq_num == 1">
-				AND sa.sq_num=1;
+				AND sa.sq_num=1 order by sa.sa_num
 			</when>
 
 			<when test="sq_num == 2">
-				AND sa.sq_num=2;
+				AND sa.sq_num=2 order by sa.sa_num
 			</when>
 
 			<when test="sq_num == 3">
-				AND sa.sq_num=3;
+				AND sa.sq_num=3 order by sa.sa_num
 			</when>
 
 			<when test="sq_num == 4">
-				AND sa.sq_num=4;
+				AND sa.sq_num=4 order by sa.sa_num
 			</when>
 
 			<when test="sq_num == 5">
-				AND sa.sq_num=5;
+				AND sa.sq_num=5 order by sa.sa_num
 			</when>
 			<when test="sq_num == 6">
-				AND sa.sq_num=6;
+				AND sa.sq_num=6 order by sa.sa_num
 			</when>
-			<!-- <otherwise>
-				AND sa.sq_num=6;
-			</otherwise> -->
+			<!-- <otherwise> AND sa.sq_num=6; </otherwise> -->
 		</choose>
 	</select>
+	 
+	<select id="pNumCheck" parameterType="int" resultType="int">
+		select count(p_num)
+		from parcel
+		WHERE p_num = #{p_num} AND receive Like 'Y'
+	</select>
+
+	<select id="pNumDupCheck" parameterType="int" resultType="int">
+		select
+		count(s_b.R_NUM)
+		from survey_board s_b, recipient r, parcel p
+		WHERE
+		s_b.r_num=r.r_num
+		AND r.p_num=p.p_num
+		AND p.p_num = #{p_num}
+	</select>
+
+	
+
+	<select id="bringAbout" parameterType="int" resultType="SurveyBringAbout">
+		select
+		r.r_num,d.e_num,r.r_receiver
+		from parcel p, deliverestimation d, recipient r
+		where p.p_num=r.p_num
+		and p.p_num=d.p_num
+		AND p.p_num=#{p_num}
+	</select>
+	
+	<!-- p.p_num, -->
 </mapper>

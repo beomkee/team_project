@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.NoticeBoard">
+
+	<select id="noticeListCount" resultType="int">
+		select nvl(count(*),0)
+		from notice_board
+	</select>
+
+	<select id="noticeList" parameterType="hashmap"
+		resultType="Notice">
+
+		select * from notice_board where nb_num between #{startRow}
+		and #{endRow}
+		order by nb_num desc
+	</select>
+
+	<update id="updateReadCount" parameterType="int">
+		update notice_board
+		set nb_readcount=nb_readcount+1 WHERE nb_num=#{nb_num}
+	</update>
+
+	<select id="getSurveyBoardContent" parameterType="int"
+		resultType="Notice">
+		select * from notice_board where nb_num=#{nb_num}
+	</select>
+
+	<select id="searchEmpId" parameterType="int" resultType="String">
+		select e.e_id from emp e,notice_board nb where e.e_num=nb.e_num
+		AND nb.nb_num=#{nb_num}
+	</select>
+</mapper>

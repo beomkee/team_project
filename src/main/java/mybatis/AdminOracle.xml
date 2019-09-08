@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+ 
+ <!-- 다른 mapper와 중독되지 않도록 네임스페이스 기재 -->
+ 
+<mapper namespace="mybatis.Admin">
+
+	<select id="getDS" parameterType="String" resultType="Deliverestimation">
+		select d.* from parcel p , DELIVERESTIMATION d where receive = 'n' and d.P_NUM = p.P_NUM and d.E_NUM = #{num}
+	</select>
+	
+	
+	<select id="isStartNode" parameterType="String" resultType="int">
+		select count(DISTINCT w.W_NUM) as isStartNod from waybill w, DELIVERESTIMATION d
+		where (select n.n_num from node n, PARCEL p where p.P_LOCATION = n.N_NAME and
+		p.P_NUM = (select d.P_NUM from DELIVERESTIMATION d where d.DS_NUM = #{num})) = w.N_START
+		and w.W_NUM = (select p.W_NUM from parcel p, DELIVERESTIMATION d where d.DS_NUM = #{num} and d.P_NUM = p.P_NUM) 
+	</select>
+	<select id="isViaNode" parameterType="String" resultType="int">
+		select count(DISTINCT w.W_NUM) as isStartNod from waybill w, DELIVERESTIMATION d
+		where (select n.n_num from node n, PARCEL p where p.P_LOCATION = n.N_NAME and
+		p.P_NUM = (select d.P_NUM from DELIVERESTIMATION d where d.DS_NUM = #{num})) = w.N_VIA
+		and w.W_NUM = (select p.W_NUM from parcel p, DELIVERESTIMATION d where d.DS_NUM = #{num} and d.P_NUM = p.P_NUM) 
+	</select>
+	<select id="isEndNode" parameterType="String" resultType="int">
+		select count(DISTINCT w.W_NUM) as isStartNod from waybill w, DELIVERESTIMATION d
+		where (select n.n_num from node n, PARCEL p where p.P_LOCATION = n.N_NAME and
+		p.P_NUM = (select d.P_NUM from DELIVERESTIMATION d where d.DS_NUM = #{num})) = w.N_END
+		and w.W_NUM = (select p.W_NUM from parcel p, DELIVERESTIMATION d where d.DS_NUM = #{num} and d.P_NUM = p.P_NUM) 
+	</select>
+	
+	
+	<select id="getViaNum" parameterType="String" resultType="int">
+		select DISTINCT w.N_VIA as isStartNod from waybill w, DELIVERESTIMATION d
+		where (select n.n_num from node n, PARCEL p where p.P_LOCATION = n.N_NAME and
+		p.P_NUM = (select d.P_NUM from DELIVERESTIMATION d where d.DS_NUM = #{num})) = w.N_START
+		and w.W_NUM = (select p.W_NUM from parcel p, DELIVERESTIMATION d where d.DS_NUM = #{num} and d.P_NUM = p.P_NUM) 
+	</select>
+	<select id="getEndNum" parameterType="String" resultType="int">
+		select DISTINCT w.N_END as isStartNod from waybill w, DELIVERESTIMATION d
+		where (select n.n_num from node n, PARCEL p where p.P_LOCATION = n.N_NAME and
+		p.P_NUM = (select d.P_NUM from DELIVERESTIMATION d where d.DS_NUM = #{num})) = w.N_VIA
+		and w.W_NUM = (select p.W_NUM from parcel p, DELIVERESTIMATION d where d.DS_NUM = #{num} and d.P_NUM = p.P_NUM)
+	</select>
+	<select id="getEmps" parameterType="int" resultType="Emp">
+		select * from emp where N_NUM = #{node}
+	</select>
+	
+	<update id="updateParcel" parameterType="hashmap">
+		update parcel set p_location = (select n.n_name from node n, emp e where e.e_num = #{emp} and e.n_num = n.n_num), p_quality = #{quality} where p_num = (select p_num from DELIVERESTIMATION where ds_num = #{ds_num})
+	</update>
+	<insert id="passParcel" parameterType="hashmap">
+		insert into DELIVERESTIMATION values(
+			(select max(ds_num)+1 from DELIVERESTIMATION),
+			(select p_num from DELIVERESTIMATION where ds_num = #{ds_num}),
+			#{emp},
+			to_date(SYSDATE,'RR/MM/DD'),
+			#{quality}
+		)
+	</insert>
+	<update id="clearParcel" parameterType="String">
+		update parcel set receive = 'y' where p_num = (select p_num from DELIVERESTIMATION where ds_num = #{ds_num})
+	</update>
+	
+	<insert id="insertReceiver" parameterType="hashmap">
+		insert into recipient values((select max(r_num)+1 from recipient), (select p_num from DELIVERESTIMATION where ds_num = #{num}), #{receiver}, to_date(SYSDATE,'RR/MM/DD'), #{receiverLocation})
+	</insert>
+	
+	<select id="isPickup" parameterType="String" resultType="int">
+		select count(*) from pickup where p_num = (select p_num from DELIVERESTIMATION where ds_num = #{num})
+	</select>
+	
+	<select id="getpick" parameterType="String" resultType="String">
+		select pu_area from pickup where p_num = (select p_num from DELIVERESTIMATION where ds_num = #{num})
+	</select>
+	
+	<select id="getempNode" parameterType="String" resultType="String">
+		select p_location from parcel where p_num = (select p_num from DELIVERESTIMATION where ds_num = #{num})
+	</select>
+</mapper>

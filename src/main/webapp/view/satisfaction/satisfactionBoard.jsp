@@ -61,7 +61,7 @@
 									<th>조회수</th>
 								</tr>
 								<c:forEach items="${surveyBoardList}" var="surveyBoard">
-									<tr>
+									<tr onClick="location.href='content?sb_num=${surveyBoard.sb_num}&pageNum=${pageNum}'" style="cursor:pointer;">
 										<td><c:out value="${number}" /></td>
 										<c:set var="number" value="${number-1}" />
 										<td colspan="3">${surveyBoard.sb_title}</td>
@@ -79,7 +79,6 @@
 												<li class="page-item"><a class="page-link" href="#"
 													tabindex="-1"><i class="fas fa-chevron-left"></i></a></li>
 											</c:if>
-
 
 											<c:if test="${startPage<=bottomLine}">
 												<li class="page-item disabled"><a class="page-link"

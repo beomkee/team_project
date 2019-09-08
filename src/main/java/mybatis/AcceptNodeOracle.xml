@@ -4,48 +4,59 @@
 <mapper namespace="mybatis.Accept">
 
 	<select id="getAllNodeDiv2" resultType="Node">
-		select * from node where n_div = 2
+		select * from node where
+		n_div = 2
 	</select>
 
-	<!-- <select id="insertArticle_new" resultType="int">
-		select nvl(max(num),0) from board
+	<select id="chargeCal" resultType="Charge"	parameterType="hashmap">
+		select * from charge where c_size = #{size} and c_area =
+		#{area}
 	</select>
 
-	<update id="insertArticle_update" parameterType="hashmap">
-		update board set re_step=re_step+1 where ref= #{ref} and re_step > #{re_step}
-	</update>
-
-	<insert id="insertArticle_insert" parameterType="Board">
-		insert into
-		board values
-		(#{num},#{boardid}
-		,#{writer},#{email},#{subject},#{passwd},sysdate,0,
-		#{ref},#{re_step},#{re_level},#{content},#{ip}, #{filename},
-		#{filesize})
+	<insert id="insertWayBill" parameterType="WayBill">
+		Insert into WAYBILL
+		values (
+			(select max(w_num)+1 from waybill),
+			to_date(SYSDATE,'RR/MM/DD'),
+			#{w_dtn},
+			#{m_num},
+			#{w_req},
+			#{sender_nm},
+			#{sender_tel},
+			#{sender_add},
+			#{receiver_nm},
+			#{receiver_tel},
+			#{receiver_add},
+			#{w_div},
+			#{w_weight},
+			#{n_start},
+			#{n_via},
+			#{n_end},
+			to_date(#{w_duedate},'RR/MM/DD'),
+			#{c_num}
+		)
 	</insert>
 
-	<select id="update_passwd" parameterType="hashmap"
-		resultType="string">
-		select passwd from board where num =#{num}
+	<select id="avgDelevery" parameterType="hashmap" resultType="String">
+		select TRUNC(avg(W_DUEDATE - W_REGDATE)) from waybill where N_START = #{s} and N_END = #{e}
 	</select>
 
-	<update id="update_readcount" parameterType="hashmap">
-		update board set
-		readcount=readcount+1 where num = #{num}
-	</update>
+	<insert id="insertParcel" parameterType="hashmap">
+		insert into parcel
+		values ((select max(p_num)+1 from parcel), (select max(w_num) from waybill), (select n_name from node where n_num = #{node}), '상', 'n')
+	</insert>
+	
+	<select id="getParcelNum" parameterType="hashmap" resultType="int">
+		select p_num from parcel where w_num = (select max(w_num) from waybill)
+	</select>
+	
+	<select id="getWbNum" parameterType="hashmap" resultType="int">
+		select w_num from waybill where w_num = (select max(w_num) from waybill)
+	</select>
 
-	<update id="update_update" parameterType="hashmap">
-		update board set
-		writer=#{writer},
-		email=#{email},
-		subject=#{subject},
-		passwd=#{passwd},
-		content=#{content}
-		where num=#{num}
-	</update>
-
-	<select id="delete" parameterType="hashmap">
-		delete from board where num = #{num}
-	</select> -->
-
+	<insert id="insertDS" parameterType="hashmap">
+		insert into DELIVERESTIMATION
+		values ((select max(ds_num)+1 from DELIVERESTIMATION), #{id}, 
+		(select * from (select e_num from emp where n_num = #{node} order by RANKAVERAGE desc) where rownum = 1), to_date(SYSDATE,'RR/MM/DD'),'상')
+	</insert>
 </mapper>

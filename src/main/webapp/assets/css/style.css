@@ -293,6 +293,7 @@ h2.subtitle::after {
 }
 
 .form-element button[type="submit"],
+.form-element button[type="button"],
 .form-element input[type="submit"] {
     border: none;
     position: relative;
@@ -314,8 +315,14 @@ h2.subtitle::after {
     z-index: 1;
     color: #58bed3;
 }
+.form-element button[type="button"]:hover span {
+    position: relative;
+    z-index: 1;
+    color: #58bed3;
+}
 
 .form-element button[type="submit"]::before,
+.form-element button[type="button"]::before,
 .form-element input[type="submit"]::before {
     content: "";
     position: absolute;
@@ -327,6 +334,7 @@ h2.subtitle::after {
 }
 
 .form-element button[type="submit"]::after,
+.form-element button[type="button"]::after,
 .form-element input[type="submit"]::after {
     content: "";
     position: absolute;
@@ -341,6 +349,7 @@ h2.subtitle::after {
 }
 
 .form-element button[type="submit"]:hover::before,
+.form-element button[type="button"]:hover::before,
 .form-element input[type="submit"]:hover::before {
     -webkit-transition: width .5s;
     -o-transition: width .5s;
@@ -349,6 +358,7 @@ h2.subtitle::after {
 }
 
 .form-element button[type="submit"]:hover::after,
+.form-element button[type="button"]:hover::after,
 .form-element input[type="submit"]:hover::after {
     -webkit-transition-property: none;
     -o-transition-property: none;
@@ -2208,6 +2218,7 @@ footer ul.userful-links li a::before {
 .footer-contact .contact-info p {
     margin-left: 15px;
     margin-bottom: 0px;
+    font-size: 14px;
 }
 
 footer .bottom-footer {
@@ -2419,7 +2430,7 @@ footer .bottom-footer {
     left: -233%;
     height: 100%;
     width: 207%;
-    background-image: url(../img/home_2/feature_bg.jpg);
+    background-image: url(../img/home_2/feature.jpg);
     background-size: cover;
     z-index: -2;
 }

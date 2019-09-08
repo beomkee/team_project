@@ -4,13 +4,124 @@
 <mapper namespace="mybatis.SurveyBoard">
 
 	<select id="surveyListCount" resultType="int">
-	select nvl(count(*),0) from SURVEY_BOARD
+		select nvl(count(*),0)
+		from SURVEY_BOARD
 	</select>
 
-	<select id="surveyList"  parameterType="hashmap" resultType="SurveyBoard">
-	select sb_num, sb_title ,r_receiver, sb_regdate, sb_readcount 
-	FROM SURVEY_BOARD sb, RECIPIENT re 
-	WHERE sb.r_num = re.r_num AND sb.sb_num BETWEEN #{startRow} AND #{endRow}
+	<select id="surveyList" parameterType="hashmap"
+		resultType="SurveyBoard">
+		select sb.sb_num, sb.sb_title, re.r_receiver,
+		sb.sb_content, sb.sb_passwd, sb.e_num, sb.sb_regdate, sb.sb_readcount
+		FROM SURVEY_BOARD sb, RECIPIENT re
+		WHERE sb.r_num = re.r_num
+		AND
+		sb.sb_num BETWEEN #{startRow} AND #{endRow}
+		order by sb.sb_num desc
 	</select>
-	
+
+	<update id="updateReadCount" parameterType="int">
+		update survey_board
+		set sb_readcount=sb_readcount+1 WHERE sb_num=#{sb_num}
+	</update>
+
+	<select id="getSurveyBoardContent" parameterType="int"
+		resultType="SurveyBoard">
+		select sb.sb_num, sb.sb_title, re.r_receiver,
+		sb.sb_content, sb.sb_passwd,
+		sb.e_num, sb.sb_regdate, sb.sb_readcount,
+		re.r_num, re.p_num
+		FROM SURVEY_BOARD sb,
+		RECIPIENT re
+		WHERE sb.r_num =
+		re.r_num
+		AND
+		sb.sb_num = #{sb_num}
+	</select>
+
+	<select id="surveyContent" parameterType="int"
+		resultType="SurveyContent">
+		select sr.sq_num, sq.sq_text, sr.sa_num, sa.sa_item
+		from
+		survey_board sb, survey_result sr, survey_answer sa, survey_question
+		sq
+		where sb.sb_num=sr.sb_num
+		AND sr.sa_num=sa.sa_num
+		AND
+		sr.sq_num=sq.sq_num
+		AND sr.sb_num=#{sb_num}
+		order by 1
+	</select>
+
+
+	<select id="insertSurvey_new" resultType="int">
+		select
+		nvl(max(sb_num),0) from survey_board
+	</select>
+
+	<insert id="insertSurvey" parameterType="SurveyInsert">
+		insert into
+		survey_board
+		values
+		(#{sb_num},#{r_num},#{e_num},sysdate,#{sb_title},#{sb_content},#{sb_passwd},0)
+	</insert>
+
+	<insert id="insertSurveyResult" parameterType="hashmap">
+		insert all
+		into
+		survey_result (sq_num,sa_num,sb_num,e_num) values ((select sq_num from
+		survey_answer where
+		sa_num=#{satisfaction1}),#{satisfaction1},#{sb_num},#{e_num})
+		into
+		survey_result (sq_num,sa_num,sb_num,e_num) values ((select sq_num from
+		survey_answer where
+		sa_num=#{satisfaction2}),#{satisfaction2},#{sb_num},#{e_num})
+		into
+		survey_result (sq_num,sa_num,sb_num,e_num) values ((select sq_num from
+		survey_answer where
+		sa_num=#{satisfaction3}),#{satisfaction3},#{sb_num},#{e_num})
+		into
+		survey_result (sq_num,sa_num,sb_num,e_num) values ((select sq_num from
+		survey_answer where
+		sa_num=#{satisfaction4}),#{satisfaction4},#{sb_num},#{e_num})
+		into
+		survey_result (sq_num,sa_num,sb_num,e_num) values ((select sq_num from
+		survey_answer where
+		sa_num=#{satisfaction5}),#{satisfaction5},#{sb_num},#{e_num})
+		into
+		survey_result (sq_num,sa_num,sb_num,e_num) values ((select sq_num from
+		survey_answer where
+		sa_num=#{satisfaction6}),#{satisfaction6},#{sb_num},#{e_num})
+		select *
+		from Dual
+	</insert>
+
+
+	<select id="passwordCheck" parameterType="int"
+		resultType="string">
+		select sb_passwd from survey_board where sb_num = #{sb_num}
+	</select>
+
+	<select id="deleteSurvey1" parameterType="int">
+		delete from
+		survey_board where sb_num=#{sb_num}
+	</select>
+
+	<select id="deleteSurvey2" parameterType="int">
+		delete from
+		survey_result where sb_num=#{sb_num}
+	</select>
+
+	<update id="updateSurveyBoard" parameterType="SurveyInsert">
+		update SURVEY_BOARD
+		set
+		SB_TITLE=#{sb_title},SB_CONTENT=#{sb_content},SB_PASSWD=#{sb_passwd}
+		where sb_num=#{sb_num}
+	</update>
+
+	<update id="updateSurveyResult" parameterType="hashmap">
+		update survey_result
+		set sa_num=#{sa_num}
+		where sb_num=#{sb_num}
+		AND sq_num=#{sq_num}
+	</update>
 </mapper>

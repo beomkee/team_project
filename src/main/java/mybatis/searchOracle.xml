@@ -20,4 +20,31 @@
 	       (select n_name from node where node.n_num = waybill.n_end) as endname
 		from waybill where w_num = #{w_num}
 	</select>
+	
+	<select id="selectQualities" parameterType="String" resultType="model.Qualities">
+		select d.ds_result as quality,
+		(select n_name from node where node.n_num = 
+		  (select emp.n_num from emp where e_num = d.e_num)) as qpoint
+		from DELIVERESTIMATION d
+		where p_num = (select p.p_num from parcel p
+		               where p.w_num = #{w_num})
+		order by d.ds_num
+	</select>
+	
+	<select id="selectWhereNow" parameterType="String" resultType="model.Parcel">
+		select * from parcel 
+		where w_num = #{w_num}
+	</select>
+	
+	<select id="reservedChk" parameterType="String" resultType="model.Pickup">
+		select * from pickup
+		where p_num = #{p_num}
+	</select>
+	
+	<insert id="pickupReserve" parameterType="model.Pickup">
+		insert into pickup values(
+		#{p_num},
+		#{pu_area},
+		#{pu_date})
+	</insert> 
 </mapper>

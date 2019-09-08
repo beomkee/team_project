@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.Administer">
+	<select id="noticeList" resultType="Notice">
+		select * from notice_board order by nb_num
+	</select>
+
+	<select id="getNoticeNum" resultType="int">
+		select nvl(count(nb_num),0) from notice_board
+	</select>
+	
+	
+	<select id="getNoticeSelectOverNum" parameterType="int" resultType="int">
+		select nvl(count(nb_num),0) from notice_board where nb_num>#{nb_num}
+	</select>
+	
+
+	<insert id="insertNotice" parameterType="Notice">
+		insert into notice_board values (#{nb_num},#{e_num},#{nb_title},#{nb_content},sysdate,0)
+	</insert>
+	
+	<update id="updateNoticeNum" parameterType="hashmap">
+		update notice_board set nb_num=#{nb_num} where nb_num=#{nb_numEdit}
+	</update>
+	
+
+	<delete id="deleteNotice" parameterType="int">
+		delete from notice_board where nb_num=#{nb_num}
+	</delete>
+	
+	<select id="bringNoticeAbout" parameterType="int" resultType="Notice">
+		select * from notice_board where nb_num=#{nb_num}
+	</select>
+
+	<update id="updateNotice" parameterType="Notice">
+		update notice_board set nb_title=#{nb_title}, nb_content=#{nb_content}, e_num=#{e_num} where
+		nb_num=#{nb_num}
+	</update>
+	
+</mapper>

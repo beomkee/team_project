@@ -16,13 +16,14 @@
     <link rel="stylesheet" href="<%=request.getContextPath() %>/assets_admin/css/demo_1/style.css">
     <!-- Layout style -->
     <link rel="shortcut icon" href="<%=request.getContextPath() %>/asssets/images/favicon.ico" />
+    
   </head>
   <body class="header-fixed">
     <!-- partial:partials/_header.html -->
     <nav class="t-header">
       <div class="t-header-brand-wrapper">
-        <a href="index.html">
-          <img class="logo" src="<%=request.getContextPath() %>/assets_admin/images/logo.svg" alt="">
+        <a href="<%= request.getContextPath()%>/main">
+          <img class="logo" src="<%=request.getContextPath() %>/assets/img/mainLogo.png" alt="">
           <img class="logo-mini" src="<%=request.getContextPath() %>/assets_admin/images/logo_mini.svg" alt="">
         </a>
       </div>

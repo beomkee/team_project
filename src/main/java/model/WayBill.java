@@ -20,10 +20,16 @@ public class WayBill {
 	private int n_start;
 	private int n_via;
 	private int n_end;
-	private Date w_duedate;
+	private String w_duedate;
 	private int c_num;
 	
 
+	public String getW_duedate() {
+		return w_duedate;
+	}
+	public void setW_duedate(String w_duedate) {
+		this.w_duedate = w_duedate;
+	}
 	public String getW_num() {
 		return w_num;
 	}
@@ -120,12 +126,6 @@ public class WayBill {
 	public void setN_end(int n_end) {
 		this.n_end = n_end;
 	}
-	public Date getW_duedate() {
-		return w_duedate;
-	}
-	public void setW_duedate(Date w_duedate) {
-		this.w_duedate = w_duedate;
-	}
 	public int getC_num() {
 		return c_num;
 	}
@@ -141,5 +141,6 @@ public class WayBill {
 				+ receiver_add + ", w_div=" + w_div + ", w_weight=" + w_weight + ", n_start=" + n_start + ", n_via="
 				+ n_via + ", n_end=" + n_end + ", w_duedate=" + w_duedate + ", c_num=" + c_num + "]";
 	}
+	
 	
 }

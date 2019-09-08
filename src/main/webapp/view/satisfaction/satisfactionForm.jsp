@@ -4,9 +4,102 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/assets/css/custom/satisfactionCustom.css">
 
-<!-- satisfaction CSS Sheet -->
+<script type="text/javascript">
+$(document).ready(function(e){
+	
+	var idx = false;
+	
+	
+	//작성보내기 전에 확인
+	$('#writeSurvey').click(function(){
+		if($.trim($('#p_num').val()) == ''||$.trim($('#p_num').val())==' '){
+			alert("운송장 번호를 입력해주세요.");
+			$('#p_num').focus();
+			idx = false;
+			return idx;
+		} else if($.trim($('#sb_title').val()) == ''||$.trim($('#sb_title').val()) ==' '){
+			alert("제목을 입력해주세요.");
+			$('#sb_title').focus();
+			idx = false;
+			return idx;
+		} else if($.trim($('#sb_passwd').val()) == ''||$.trim($('#sb_passwd').val()) ==' '){
+			alert("사용하실 암호를 입력해주세요.");
+			$('#password').focus();
+			idx = false;
+			return idx;
+		} 
 
-<!--  breadcrumb start  -->
+		if(idx==false){
+			alert("운송장 번호를 체크해주세요.");
+			idx = false;
+			return idx;
+		} /* else{
+			$('#surveyForm').submit();
+		} */
+	});
+	
+	//유효성 검사
+	$('#check').click(function(){
+		$.ajax({
+			url: "${pageContext.request.contextPath}/satisfaction/pNumCheck",
+			type: "GET",
+			data:{
+				"p_num":$('#p_num').val()
+			},
+			success: function(data){
+				//작성 가능
+				if(data == 0 && ($.trim($('#p_num').val()) != ''||$.trim($('#p_num').val()) != ' ')){
+					idx=true;
+					$('#p_num').attr("readonly",true);
+					var html="<p style='color: green'><b>작성 가능합니다.</b></p>";
+					$('#pNumCheck').empty();
+					$('#pNumCheck').append(html);
+				}
+				//중복
+				else if(data == 1&& ($.trim($('#p_num').val()) != ''||$.trim($('#p_num').val()) != ' ')){
+					var html="<p style='color: red'><b>이미 작성하셨습니다.</b></p>";
+					$('#pNumCheck').empty();
+					$('#pNumCheck').append(html);
+				}
+				//운송장 없거나 수령 안했을경우
+				else{
+					var html="<p style='color: red'><b>유효하지 않은 운송장 번호입니다.</b></p>";
+					$('#pNumCheck').empty();
+					$('#pNumCheck').append(html);
+				}
+			},
+			error: function(){
+				alert("운송장 번호를 입력해주세요.");
+			}
+		});
+	});
+	
+	
+	//값 가져오기
+	$('#check').click(function(){
+		$.ajax({
+			url: "${pageContext.request.contextPath}/satisfaction/pNumCheck1",
+			type: "GET",
+			data:{
+				"p_num":$('#p_num').val()
+			},
+			dataType:"json",
+			success: function(data){
+				$('input[name=r_num]').attr('value',data.r_num);
+				$('input[name=e_num]').attr('value',data.e_num);
+				$('input[name=r_receiver]').attr('value',data.r_receiver);
+				
+			},
+			error: function(){
+				
+			}
+		});
+	});
+	
+	
+	
+});
+</script>
 <div class="breadcrumb-area satisfactionForm-bg">
 	<div class="container">
 		<div class="row">
@@ -39,27 +132,32 @@
 					</div>
 				</div>
 				<!-- 만족도 작성 폼 -->
-				<form action="#">
+				<form id="surveyForm" name="surveyForm" action="surveyPro">
 					<div class="row">
 						<div class="col-lg-5">
 							<div class="form-element">
 							
 							<!--  운송장번호  -->
-								<input name="receiveNum" type="text"
-									placeholder="운송장 번호를 입력해주세요.">
+								<input type="text" name="p_num" id="p_num" placeholder="운송장 번호를 입력해주세요.">
 							</div>
 						</div>
+						<!-- 체크 버튼 -->
 						<div class="col-lg-2">
-							<button type="button" id="r_Num" class="boxed-btn">
+							<button type="button" class="boxed-btn" id="check">
 								<span>check</span>
 							</button>
+						</div>
+						<!-- 확인 메세지 -->
+						<div class="col-lg-5">
+							<p id = "pNumCheck"></p>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-lg-3">
 							<div class="form-element">
+							<input name="r_num" id="r_num" type="hidden" value="${surveyBoardAboutList.r_num}"/>
 							<!--  직원 이름  -->
-								<input name="employeeName" type="text" placeholder="담당직원 이름"
+								<input name="e_num" id="e_num" type="text" value="${surveyBoardAboutList.e_num}" placeholder="담당 직원 번호"
 									readonly="readonly" />
 							</div>
 						</div>
@@ -67,7 +165,7 @@
 						<div class="col-lg-3">
 							<div class="form-element">
 							<!-- 평가자이름  -->
-								<input name="Name" type="text" placeholder="평가자이름" />
+								<input name="r_receiver" type="text" id="r_receiver" value="${surveyBoardAboutList.r_receiver}" placeholder="평가자이름" />
 							</div>
 						</div>
 					</div>
@@ -77,15 +175,16 @@
 							<div class="form-element">
 							<c:forEach items="${surveyQuestionList}" var="surveyQuestion">
 								<p>
-									<b>${surveyQuestion.sq_text}</b>
+								<input type="hidden" name="${surveyQuestion.sq_num}" value="${surveyQuestion.sq_num}">
+									<b>${surveyQuestion.sq_num}. ${surveyQuestion.sq_text}</b>
 								</p>
 								<!-- 평가선택지 -->
 								<div>
-								<c:forEach items="${surveyAnswerList}" var="surveyAnswer">
+								<c:forEach items="${surveyAnswerList}" var="surveyAnswer" >
 								<c:if test="${surveyQuestion.sq_num==surveyAnswer.sq_num}">
 								
-								<input name="${surveyQuestion.sq_num}point" id="${surveyQuestion.sq_num}point${surveyAnswer.sa_num}" type="radio"> <label for="${surveyQuestion.sq_num}point${surveyAnswer.sa_num}"></label>
-								
+								<input name="satisfaction${surveyAnswer.sq_num}" value="${surveyAnswer.sa_num}" id="${surveyQuestion.sq_num}point${surveyAnswer.sa_num}" type="radio"> <label for="${surveyQuestion.sq_num}point${surveyAnswer.sa_num}"></label>${surveyAnswer.sa_item}&nbsp;&nbsp;&nbsp;
+
 								</c:if>
 								<c:if test="${surveyQuestion.sq_num!=surveyAnswer.sq_num}">
 								
@@ -103,7 +202,7 @@
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="form-element">
-								<input name="title" type="text" placeholder="제목">
+								<input name="sb_title" type="text" id="sb_title" placeholder="제목">
 							</div>
 						</div>
 					</div>
@@ -112,7 +211,7 @@
 					<div class="row">
 						<div class="col-lg-10">
 							<div class="form-element">
-								<input name="title" type="text" placeholder="이용 후기를 간단히 남겨주세요">
+								<input name="sb_content" type="text" placeholder="이용 후기를 간단히 남겨주세요">
 							</div>
 						</div>
 					</div>
@@ -120,25 +219,16 @@
 					<div class="row">
 						<div class="col-lg-3">
 							<div class="form-element">
-								<input name="password" type="password" placeholder="비밀번호">
+								<input name="sb_passwd" id="sb_passwd" type="password" placeholder="비밀번호">
 							</div>
 						</div>
 					</div>
-					
+					<!-- 안내사항 -->
 					<div class="row">
 						<div class="col-lg-10">
 							<div class="form-element">
 								<p class="desc">본 자료는 택배 서비스 개선 목적으로 수집합니다.</p>
-								<p class="desc">제출 시에는 평가 게시에 동의, &nbsp;추후 게시판에 게시 될 수 있습니다.</p>
-							</div>
-						</div>
-					</div>
-					
-					<!-- 할거 메모 -->
-					<div class="row">
-						<div class="col-lg-10">
-							<div class="form-element">
-								<p>할거: 기본적인 공백, null값 검사 할 예정, 직원의 경우 운송장 검사 하면 긁어올수 있도록, 평가자 이름은 긁어오도록 하되 수정 가능하게. 별은 해당 별에 해당되는 거 말고도 이전 별들도 체크되게(ex.5점이면 1,2,3,4번째 별도 체크 이미지로 뜨게끔)</p>
+								<p class="desc">제출 시에는 평가 게시에 동의, &nbsp;추후 게시판에 게시됩니다.</p>
 							</div>
 						</div>
 					</div>
@@ -147,7 +237,7 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="form-element mb-0">
-								<button type="submit" class="boxed-btn">
+								<button type="submit" class="boxed-btn" id="writeSurvey">
 									<span>Submit</span>
 								</button>
 							</div>
@@ -206,33 +296,3 @@
 		</div>
 	</div>
 </div>
-<!--  features section end  -->
-<style>
-.common-table-top {
-	margin-bottom: 15px;
-	padding: 18px 30px 15px;
-	border-bottom: solid 1px #bec0c2;
-	background: #f2f2f2
-}
-
-.common-table-top strong {
-	font-weight: 800;
-	font-size: 18px;
-	color: #007ac3
-}
-
-.common-table-top span:before {
-	display: inline-block;
-	content: '';
-	width: 7px;
-	height: 1px;
-	vertical-align: middle;
-	margin: 0 6px 0 11px;
-	background: #333
-}
-
-.common-table-top span {
-	font-size: 15px;
-	color: #333
-}
-</style>

@@ -29,4 +29,5 @@
       <link rel="stylesheet" href="<%=request.getContextPath() %>/assets/css/responsive.css">
       <!-- jquery js -->
       <script src="<%=request.getContextPath() %>/assets/js/jquery-3.3.1.min.js"></script>
+      
    </head>
